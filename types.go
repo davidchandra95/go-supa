@@ -5,7 +5,7 @@ import (
 	"time"
 )
 
-type Todo struct {
+type Task struct {
 	ID        uuid.UUID `json:"id"`
 	Task      string    `json:"task"`
 	Status    int       `json:"status"`

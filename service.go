@@ -11,3 +11,7 @@ func NewService(repo *Repository) *Service {
 func (s *Service) CreateTask(task NewTask) error {
 	return s.repo.Insert(task)
 }
+
+func (s *Service) GetTasks() ([]Task, error) {
+	return s.repo.Select()
+}

@@ -2,7 +2,6 @@ package main
 
 import (
 	"context"
-	"fmt"
 	"github.com/joho/godotenv"
 	supa "github.com/nedpals/supabase-go"
 	"log"
@@ -28,9 +27,7 @@ func main() {
 	router := http.NewServeMux()
 
 	router.HandleFunc("POST /todos", handlers.CreateTaskHandler)
-	router.HandleFunc("GET /todos", func(writer http.ResponseWriter, r *http.Request) {
-		fmt.Println("hehehehe")
-	})
+	router.HandleFunc("GET /todos", handlers.GetAllTasksHandler)
 
 	server := &http.Server{
 		Addr:    ":8080",
