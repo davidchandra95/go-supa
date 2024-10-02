@@ -5,12 +5,17 @@ import (
 	"net/http"
 )
 
-type Handler struct {
-	svc *Service
+type TaskService interface {
+	CreateTask(task NewTask) error
+	GetTasks() ([]Task, error)
 }
 
-func NewHandler(svc *Service) *Handler {
-	return &Handler{svc: svc}
+type Handler struct {
+	taskSvc TaskService
+}
+
+func NewHandler(taskSvc TaskService) *Handler {
+	return &Handler{taskSvc: taskSvc}
 }
 
 func (h *Handler) CreateTaskHandler(w http.ResponseWriter, r *http.Request) {
@@ -22,7 +27,7 @@ func (h *Handler) CreateTaskHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	err = h.svc.CreateTask(newTask)
+	err = h.taskSvc.CreateTask(newTask)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
@@ -32,7 +37,7 @@ func (h *Handler) CreateTaskHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func (h *Handler) GetAllTasksHandler(w http.ResponseWriter, r *http.Request) {
-	tasks, err := h.svc.GetTasks()
+	tasks, err := h.taskSvc.GetTasks()
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return

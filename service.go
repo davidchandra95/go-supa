@@ -1,17 +1,22 @@
 package main
 
-type Service struct {
-	repo *Repository
+type TaskRepository interface {
+	Insert(task NewTask) error
+	Select() ([]Task, error)
 }
 
-func NewService(repo *Repository) *Service {
-	return &Service{repo: repo}
+type Service struct {
+	taskRepo TaskRepository
+}
+
+func NewService(repo TaskRepository) *Service {
+	return &Service{taskRepo: repo}
 }
 
 func (s *Service) CreateTask(task NewTask) error {
-	return s.repo.Insert(task)
+	return s.taskRepo.Insert(task)
 }
 
 func (s *Service) GetTasks() ([]Task, error) {
-	return s.repo.Select()
+	return s.taskRepo.Select()
 }
